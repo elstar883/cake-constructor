@@ -47,6 +47,7 @@
 ├── .nojekyll
 ├── AGENTS.md
 ├── LICENSE
+├── README.en.md
 ├── README.md
 ├── index.html
 ├── css/
@@ -74,6 +75,7 @@
 - `js/app.js` — инициализация, состояние, DOM, каталог начинок, `localStorage`.
 - `docs/` — паспорт проекта, ТЗ и скриншоты интерфейса.
 - `README.md` — описание проекта для портфолио.
+- `README.en.md` — англоязычная версия README.
 
 Скрипты подключаются в порядке: `config.js` → `pricing.js` → `order.js` → `app.js` с атрибутом `defer`.
 

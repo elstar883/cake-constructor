@@ -1,5 +1,7 @@
 # 🎂 Конструктор торта
 
+> 🇷🇺 Русский · 🇬🇧 [English](README.en.md)
+
 **Одностраничный веб-калькулятор, который позволяет покупателю собрать торт, сразу увидеть стоимость и получить готовую карточку заказа для мессенджера — без переписки с кондитером.**
 
 [![Демо](https://img.shields.io/badge/demo-live-2e7d5a)](https://elstar883.github.io/cake-constructor/)
@@ -184,6 +186,7 @@ total       = cake + decor + inscription + discount
 │   └── screenshots/        # скриншоты интерфейса
 ├── AGENTS.md               # правила разработки и интерфейса
 ├── LICENSE
+├── README.en.md            # английская версия README
 └── README.md
 ```
 
