@@ -56,11 +56,13 @@ The project runs entirely in the browser: no backend, no build step, no dependen
 
 ![Desktop version](docs/screenshots/desktop.png)
 
-**Mobile** — the total and the button are pinned to the bottom of the screen:
+**Mobile** — the form, the filling and decor pickers, and the total with the footer; three screens in a row:
 
 <p align="center">
-  <img src="docs/screenshots/mobile.png" width="340" alt="Mobile version" />
+  <img src="docs/screenshots/mobile-mockup.png" alt="Mobile version: three app screens" />
 </p>
+
+<sub>Full-page screenshot — [`docs/screenshots/mobile.png`](docs/screenshots/mobile.png).</sub>
 
 ## Features
 

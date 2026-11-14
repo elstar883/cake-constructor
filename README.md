@@ -54,11 +54,13 @@
 
 ![Десктопная версия](docs/screenshots/desktop.png)
 
-**Мобильный** — итог и кнопка закреплены внизу экрана:
+**Мобильный** — форма, выбор начинки и декора, итог и футер; три экрана подряд:
 
 <p align="center">
-  <img src="docs/screenshots/mobile.png" width="340" alt="Мобильная версия" />
+  <img src="docs/screenshots/mobile-mockup.png" alt="Мобильная версия: три экрана приложения" />
 </p>
+
+<sub>Полный скриншот страницы целиком — [`docs/screenshots/mobile.png`](docs/screenshots/mobile.png).</sub>
 
 ## Возможности
 
