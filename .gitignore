@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Редакторы и IDE
+.vscode/
+.idea/
+*.swp
+*.sublime-*
+
+# Логи и временные файлы
+*.log
+npm-debug.log*
+_tmp/
