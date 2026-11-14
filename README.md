@@ -164,7 +164,7 @@ total       = cake + decor + inscription + discount
 
 - **HTML5** — семантическая разметка, `<dialog>`, `<fieldset>`.
 - **CSS3** — переменные, Flexbox, Grid, `clamp()`, mobile-first, `safe-area-inset`.
-- **Ванильный JavaScript** — классические скрипты, IIFE и единое пространство имён `window.CakeApp`.
+- **Vanilla JavaScript** — классические скрипты, IIFE и единое пространство имён `window.CakeApp`.
 - **`localStorage`** — черновик и последний заказ (все обращения в `try/catch`).
 - **Без фреймворков, сборки и зависимостей** — открывается напрямую через `file://` и работает без сети.
 

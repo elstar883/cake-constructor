@@ -28,7 +28,7 @@
 
 - HTML5.
 - CSS3.
-- Ванильный JavaScript.
+- Vanilla JavaScript.
 - `localStorage` для черновика и последнего заказа.
 - Статический хостинг.
 - Без фреймворков.
