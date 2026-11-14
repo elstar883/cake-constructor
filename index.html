@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff8f0">
+  <meta name="description" content="Соберите торт, сразу узнайте стоимость и скопируйте готовый заказ кондитеру.">
+  <title>Конструктор торта — рассчитайте заказ</title>
+  <link rel="stylesheet" href="css/styles.css?v=5">
+  <script src="js/config.js" defer></script>
+  <script src="js/pricing.js" defer></script>
+  <script src="js/order.js" defer></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Перейти к содержимому</a>
+
+  <noscript>
+    <div class="noscript">
+      Для расчёта стоимости нужен JavaScript. Включите его в настройках браузера.
+    </div>
+  </noscript>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">🎂</span>
+        <span class="brand__text">Конструктор торта</span>
+      </div>
+      <button type="button" class="link-button" data-open-prices>Цены</button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero container" aria-labelledby="pageTitle">
+      <p class="eyebrow">Кондитерская</p>
+      <h1 id="pageTitle">Соберите свой торт</h1>
+      <p class="lead">Выберите вес, начинку и декор — стоимость обновится сразу.</p>
+    </section>
+
+    <div class="container layout">
+      <form id="cakeForm" class="calculator" novalidate>
+        <div
+          class="form-errors"
+          id="formErrors"
+          role="alert"
+          tabindex="-1"
+          hidden
+        >
+          <h2>Проверьте форму</h2>
+          <ul id="formErrorsList"></ul>
+        </div>
+
+        <fieldset class="form-section">
+          <legend class="form-section__legend">Вес торта</legend>
+          <p class="field-hint" id="weightHint">Выберите вес торта.</p>
+          <div
+            class="option-grid"
+            id="weightOptions"
+            aria-describedby="weightHint weightError"
+          ></div>
+          <p class="field-error" id="weightError" hidden></p>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend class="form-section__legend">Начинка</legend>
+          <div class="form-section__head">
+            <p class="field-hint" id="fillingHint">
+              Цена указана за килограмм готового торта.
+            </p>
+            <button type="button" class="link-button" data-open-catalog>
+              Каталог начинок
+            </button>
+          </div>
+          <div
+            class="option-list"
+            id="fillingOptions"
+            aria-describedby="fillingHint fillingError"
+          ></div>
+          <p class="field-error" id="fillingError" hidden></p>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend class="form-section__legend">Декор</legend>
+          <div class="form-section__head">
+            <p class="field-hint" id="decorHint">
+              Фиксированная стоимость за торт.
+            </p>
+            <button type="button" class="link-button" data-open-decor-catalog>
+              Каталог декора
+            </button>
+          </div>
+          <div
+            class="option-list"
+            id="decorOptions"
+            aria-describedby="decorHint decorError"
+          ></div>
+          <p class="field-error" id="decorError" hidden></p>
+        </fieldset>
+
+        <fieldset class="form-section" id="inscriptionSection">
+          <legend class="form-section__legend">Надпись на торте</legend>
+          <div class="field">
+            <label for="inscription">
+              Текст надписи
+              <span class="optional">(необязательно)</span>
+            </label>
+            <input
+              type="text"
+              id="inscription"
+              name="inscription"
+              maxlength="30"
+              autocomplete="off"
+              aria-describedby="inscriptionHint inscriptionError"
+            >
+            <div class="field-meta">
+              <p class="field-hint" id="inscriptionHint">
+                До 30 символов. Стоимость добавится в итог.
+              </p>
+              <span class="char-counter" id="inscriptionCount">0 / 30</span>
+            </div>
+            <p class="field-error" id="inscriptionError" hidden></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend class="form-section__legend">Дата и время выдачи</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="pickupDate">Дата выдачи</label>
+              <input
+                type="date"
+                id="pickupDate"
+                name="pickupDate"
+                required
+                aria-describedby="dateHint discountHint dateError"
+              >
+              <p class="field-hint" id="dateHint">Выберите дату выдачи.</p>
+              <p class="field-hint" id="discountHint" hidden></p>
+              <p class="field-error" id="dateError" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="pickupTime">Время</label>
+              <select
+                id="pickupTime"
+                name="pickupTime"
+                required
+                aria-describedby="pickupTimeHint pickupTimeError"
+              >
+                <option value="">Выберите время</option>
+              </select>
+              <p class="field-hint" id="pickupTimeHint">Время самовывоза.</p>
+              <p class="field-error" id="pickupTimeError" hidden></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend class="form-section__legend">Контакты</legend>
+          <p class="field-hint">
+            Данные остаются в вашем браузере и попадут только в карточку заказа.
+          </p>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="customerName">Имя</label>
+              <input
+                type="text"
+                id="customerName"
+                name="customerName"
+                maxlength="50"
+                autocomplete="name"
+                required
+                aria-describedby="customerNameError"
+              >
+              <p class="field-error" id="customerNameError" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="customerContact">Телефон или Telegram</label>
+              <input
+                type="text"
+                id="customerContact"
+                name="customerContact"
+                maxlength="100"
+                autocomplete="tel"
+                required
+                aria-describedby="customerContactHint customerContactError"
+              >
+              <p class="field-hint" id="customerContactHint">
+                Например: +7 999 123-45-67 или @username.
+              </p>
+              <p class="field-error" id="customerContactError" hidden></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="customerComment">
+              Комментарий
+              <span class="optional">(необязательно)</span>
+            </label>
+            <textarea
+              id="customerComment"
+              name="customerComment"
+              rows="3"
+              maxlength="200"
+              aria-describedby="customerCommentHint customerCommentError"
+            ></textarea>
+            <div class="field-meta">
+              <p class="field-hint" id="customerCommentHint">
+                Пожелания или важные детали.
+              </p>
+              <span class="char-counter" id="commentCount">0 / 200</span>
+            </div>
+            <p class="field-error" id="customerCommentError" hidden></p>
+          </div>
+        </fieldset>
+      </form>
+
+      <aside class="summary" aria-labelledby="summaryTitle">
+        <div class="summary__card">
+          <div class="summary__header">
+            <h2 id="summaryTitle">Ваш торт</h2>
+            <p class="summary__selection" id="summarySelection">
+              Пока ничего не выбрано
+            </p>
+          </div>
+
+          <dl class="price-lines" id="priceBreakdown">
+            <div class="price-line" data-line="cake">
+              <dt>
+                Торт
+                <span class="price-line__detail" data-price-detail="cake">
+                  Выберите вес и начинку
+                </span>
+              </dt>
+              <dd><span data-price="cake">—</span></dd>
+            </div>
+
+            <div class="price-line" data-line="decor">
+              <dt>
+                Декор
+                <span class="price-line__detail" data-price-detail="decor">
+                  Выберите декор
+                </span>
+              </dt>
+              <dd><span data-price="decor">—</span></dd>
+            </div>
+
+            <div class="price-line" data-line="inscription" hidden>
+              <dt>Надпись</dt>
+              <dd><span data-price="inscription">—</span></dd>
+            </div>
+
+            <div class="price-line price-line--discount" data-line="discount" hidden>
+              <dt>
+                Скидка за ранний заказ
+                <span class="price-line__detail" data-price-detail="discount"></span>
+              </dt>
+              <dd><span data-price="discount">—</span></dd>
+            </div>
+
+            <div class="price-line price-line--total">
+              <dt>Итого</dt>
+              <dd><span id="totalPrice" aria-live="polite">—</span></dd>
+            </div>
+          </dl>
+
+          <p class="summary__note" id="summaryDisclaimer"></p>
+
+          <button
+            type="submit"
+            class="btn btn--primary btn--full summary__submit"
+            form="cakeForm"
+          >
+            Сформировать заказ
+          </button>
+
+          <p class="summary__privacy">
+            Данные хранятся только в вашем браузере.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="sticky-bar" aria-label="Итог заказа">
+    <div class="sticky-bar__inner">
+      <div class="sticky-bar__price">
+        <span class="sticky-bar__label">Итого</span>
+        <strong id="stickyTotal">—</strong>
+      </div>
+      <button type="submit" class="btn btn--primary" form="cakeForm">
+        Сформировать заказ
+      </button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p>Цена предварительная. Кондитер подтвердит заказ.</p>
+      <nav class="footer-links" aria-label="Дополнительные действия">
+        <button type="button" class="link-button" data-open-prices>Цены</button>
+        <button type="button" class="link-button" id="openLastOrderButton" hidden>
+          Последний заказ
+        </button>
+        <button type="button" class="link-button" id="clearDataButton">
+          Очистить сохранённые данные
+        </button>
+      </nav>
+    </div>
+  </footer>
+
+  <dialog id="orderDialog" class="modal" aria-labelledby="orderDialogTitle">
+    <div class="modal__content">
+      <header class="modal__header">
+        <div>
+          <p class="eyebrow">Готово</p>
+          <h2 id="orderDialogTitle">Карточка заказа</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close-dialog
+          aria-label="Закрыть карточку заказа"
+        >
+          ×
+        </button>
+      </header>
+
+      <p class="modal__lead">
+        Проверьте детали и скопируйте карточку в чат с кондитером.
+      </p>
+
+      <label class="visually-hidden" for="orderCardText">
+        Текст карточки заказа
+      </label>
+      <textarea
+        id="orderCardText"
+        class="order-card"
+        readonly
+        rows="18"
+        spellcheck="false"
+      ></textarea>
+
+      <p class="copy-status" id="copyStatus" role="status" aria-live="polite"></p>
+
+      <div class="modal__actions">
+        <button type="button" class="btn btn--primary" id="copyOrderButton">
+          Копировать
+        </button>
+        <button type="button" class="btn btn--secondary" data-close-dialog>
+          Изменить заказ
+        </button>
+        <button type="button" class="btn btn--ghost" id="resetOrderButton">
+          Начать заново
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="catalogDialog" class="modal modal--wide" aria-labelledby="catalogDialogTitle">
+    <div class="modal__content">
+      <header class="modal__header">
+        <div>
+          <p class="eyebrow">Начинки</p>
+          <h2 id="catalogDialogTitle">Каталог начинок</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close-dialog
+          aria-label="Закрыть каталог начинок"
+        >
+          ×
+        </button>
+      </header>
+
+      <p class="modal__lead">
+        Нажмите на начинку, чтобы выбрать её. Цена указана за килограмм готового
+        торта.
+      </p>
+
+      <div class="catalog-grid" id="catalogGrid"></div>
+    </div>
+  </dialog>
+
+  <dialog id="decorDialog" class="modal modal--wide" aria-labelledby="decorDialogTitle">
+    <div class="modal__content">
+      <header class="modal__header">
+        <div>
+          <p class="eyebrow">Декор</p>
+          <h2 id="decorDialogTitle">Каталог декора</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close-dialog
+          aria-label="Закрыть каталог декора"
+        >
+          ×
+        </button>
+      </header>
+
+      <p class="modal__lead">
+        Примеры показывают, что входит в каждый вариант. Нажмите на карточку,
+        чтобы выбрать декор.
+      </p>
+
+      <div class="catalog-grid catalog-grid--decor" id="decorGrid"></div>
+    </div>
+  </dialog>
+
+  <dialog id="pricesDialog" class="modal modal--wide" aria-labelledby="pricesDialogTitle">
+    <div class="modal__content">
+      <header class="modal__header">
+        <div>
+          <p class="eyebrow">Прозрачно</p>
+          <h2 id="pricesDialogTitle">Цены и условия</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close-dialog
+          aria-label="Закрыть цены"
+        >
+          ×
+        </button>
+      </header>
+
+      <p class="modal__lead">
+        Цены начинок указаны за килограмм готового торта. Декор — фиксированная стоимость.
+      </p>
+
+      <section class="prices-section" aria-labelledby="pricesFillingsTitle">
+        <h3 id="pricesFillingsTitle">Начинки</h3>
+        <div class="table-wrap">
+          <table class="prices-table">
+            <caption class="visually-hidden">
+              Начинки и цены за килограмм
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Начинка</th>
+                <th scope="col">Цена за кг</th>
+                <th scope="col">Описание</th>
+              </tr>
+            </thead>
+            <tbody id="pricesFillingsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="prices-section" aria-labelledby="pricesDecorTitle">
+        <h3 id="pricesDecorTitle">Декор</h3>
+        <div class="table-wrap">
+          <table class="prices-table">
+            <caption class="visually-hidden">
+              Декор и фиксированные цены
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Декор</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Описание</th>
+              </tr>
+            </thead>
+            <tbody id="pricesDecorBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="prices-section" aria-labelledby="pricesConditionsTitle">
+        <h3 id="pricesConditionsTitle">Условия заказа</h3>
+        <ul class="conditions-list" id="pricesConditions"></ul>
+      </section>
+
+      <p class="disclaimer" id="pricesDisclaimer"></p>
+    </div>
+  </dialog>
+
+  <dialog id="clearDialog" class="modal modal--compact" aria-labelledby="clearDialogTitle">
+    <div class="modal__content">
+      <header class="modal__header">
+        <div>
+          <p class="eyebrow">Приватность</p>
+          <h2 id="clearDialogTitle">Очистить данные?</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          data-close-dialog
+          aria-label="Закрыть подтверждение"
+        >
+          ×
+        </button>
+      </header>
+
+      <p class="modal__lead">
+        Будут удалены черновик формы и последний сохранённый заказ. Это действие
+        нельзя отменить.
+      </p>
+
+      <div class="modal__actions">
+        <button type="button" class="btn btn--primary" id="confirmClearButton">
+          Очистить
+        </button>
+        <button
+          type="button"
+          class="btn btn--secondary"
+          id="clearCancelButton"
+          data-close-dialog
+        >
+          Отмена
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    popover="manual"
+  ></div>
+</body>
+</html>
